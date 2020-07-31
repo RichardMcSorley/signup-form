@@ -20,13 +20,13 @@ const initialState = {
         isDirty: false,
         placeholder: "Verify your Password"
     },
-    formSubmited: false,
+    formSubmited: false
 };
 
 class SignUpForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {...initialState};
+        this.state = { ...initialState };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -44,7 +44,7 @@ class SignUpForm extends Component {
         event.preventDefault();
         const element = event.target;
         const data = new FormData(element);
-        this.setState({...initialState, formSubmited: true });
+        this.setState({ ...initialState, formSubmited: true });
         alert(`Welcome, ${data.get("username")}!`);
     }
 
@@ -53,7 +53,7 @@ class SignUpForm extends Component {
         const validPassword = password.value !== doubleCheck.value;
         return (
             <form
-                className="flex flex-col items-center justify-center"
+                className="flex flex-col items-center justify-center p-8 bg-white rounded shadow-lg"
                 onSubmit={this.handleSubmit}
             >
                 <Input
@@ -101,7 +101,7 @@ class SignUpForm extends Component {
                     <div className="text-red-500">Passwords do not match</div>
                 )}
                 <button
-                    className="p-1 px-2 my-2 text-white bg-blue-500 shadow rounded-md"
+                    className="p-2 px-4 mt-5 text-white bg-blue-500 shadow-md rounded-md"
                     type="submit"
                 >
                     Sign up
