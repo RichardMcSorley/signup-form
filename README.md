@@ -12,5 +12,5 @@ yarn dev
 
 See it running [http://localhost:3000](http://localhost:3000)
 
-> Alternatively, you can view it in production [https://singup-form.vercel.app](https://singup-form.vercel.app)
+> Alternatively, you can view it in production [https://signupform.richardmcsorley.com](https://signupform.richardmcsorley.com)
 
