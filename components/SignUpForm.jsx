@@ -44,13 +44,19 @@ class SignUpForm extends Component {
         event.preventDefault();
         const element = event.target;
         const data = new FormData(element);
+        const { username, password, doubleCheck } = this.state;
+        const inValidPassword = password.value !== doubleCheck.value;
+        if(inValidPassword === true) return
+        if(username.isDirty === false) return
+        if(password.isDirty === false) return
+        if(doubleCheck.isDirty === false) return
         this.setState({ ...initialState, formSubmited: true });
         alert(`Welcome, ${data.get("username")}!`);
     }
 
     render() {
         const { username, password, doubleCheck } = this.state;
-        const validPassword = password.value !== doubleCheck.value;
+        const inValidPassword = password.value !== doubleCheck.value;
         return (
             <form
                 className="flex flex-col items-center justify-center p-8 bg-white rounded shadow-lg"
@@ -74,7 +80,7 @@ class SignUpForm extends Component {
                     className={`${
                         username.isDirty &&
                         doubleCheck.isDirty &&
-                        validPassword &&
+                        inValidPassword &&
                         "border-red-500"
                     }`}
                     onChange={this.handleChange}
@@ -90,14 +96,14 @@ class SignUpForm extends Component {
                         className={`${
                             username.isDirty &&
                             doubleCheck.isDirty &&
-                            validPassword &&
+                            inValidPassword &&
                             "border-red-500"
                         }`}
                         onChange={this.handleChange}
                     />
                 )}
 
-                {password.isDirty && doubleCheck.isDirty && validPassword && (
+                {password.isDirty && doubleCheck.isDirty && inValidPassword && (
                     <div className="text-red-500">Passwords do not match</div>
                 )}
                 <button
