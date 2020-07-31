@@ -61,7 +61,7 @@ class SignUpForm extends Component {
     invalidText() {
         let reason = null;
         const { password, doubleCheck } = this.state;
-        if (password.value !== doubleCheck.value)
+        if (doubleCheck.isDirty && password.value !== doubleCheck.value)
             reason = "Passwords do not match";
         if (password.isDirty && password.value.length === 0)
             reason = "Please type a password";
