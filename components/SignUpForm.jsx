@@ -45,18 +45,36 @@ class SignUpForm extends Component {
         const element = event.target;
         const data = new FormData(element);
         const { username, password, doubleCheck } = this.state;
-        const inValidPassword = password.value !== doubleCheck.value;
-        if(inValidPassword === true) return
-        if(username.isDirty === false) return
-        if(password.isDirty === false) return
-        if(doubleCheck.isDirty === false) return
+        if (this.invalidText() !== null) return;
+        if (this.isDirty([username, password, doubleCheck]) === false) return;
         this.setState({ ...initialState, formSubmited: true });
         alert(`Welcome, ${data.get("username")}!`);
     }
 
+    isDirty(fieldArray = []) {
+        for (const field of fieldArray) {
+            if (field.isDirty) return true;
+        }
+        return false;
+    }
+
+    invalidText() {
+        let reason = null;
+        const { password, doubleCheck } = this.state;
+        if (password.value !== doubleCheck.value)
+            reason = "Passwords do not match";
+        if (password.isDirty && password.value.length === 0)
+            reason = "Please type a password";
+        return reason;
+    }
+
     render() {
         const { username, password, doubleCheck } = this.state;
-        const inValidPassword = password.value !== doubleCheck.value;
+        const invalidText = this.invalidText();
+        const highlightRed =
+            this.isDirty([username, password]) &&
+            invalidText &&
+            "border-red-500";
         return (
             <form
                 className="flex flex-col items-center justify-center p-8 bg-white rounded shadow-lg"
@@ -77,15 +95,10 @@ class SignUpForm extends Component {
                     placeholder={password.placeholder}
                     name={password.name}
                     type="password"
-                    className={`${
-                        username.isDirty &&
-                        doubleCheck.isDirty &&
-                        inValidPassword &&
-                        "border-red-500"
-                    }`}
                     onChange={this.handleChange}
+                    className={`${highlightRed}`}
                 />
-                {password.isDirty && (
+                {this.isDirty([password]) && (
                     <Input
                         required
                         id={doubleCheck.name}
@@ -93,18 +106,13 @@ class SignUpForm extends Component {
                         placeholder={doubleCheck.placeholder}
                         name={doubleCheck.name}
                         type="password"
-                        className={`${
-                            username.isDirty &&
-                            doubleCheck.isDirty &&
-                            inValidPassword &&
-                            "border-red-500"
-                        }`}
                         onChange={this.handleChange}
+                        className={`${highlightRed}`}
                     />
                 )}
 
-                {password.isDirty && doubleCheck.isDirty && inValidPassword && (
-                    <div className="text-red-500">Passwords do not match</div>
+                {this.isDirty([username, password]) && (
+                    <div className="text-red-500">{invalidText}</div>
                 )}
                 <button
                     className="p-2 px-4 mt-5 text-white bg-blue-500 shadow-md rounded-md"
